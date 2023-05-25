@@ -69,6 +69,7 @@ public class JogoDosOito extends JFrame implements KeyListener {
 		setVisible(true);
 	}
 
+
 	private void movimentarPeca(int linha, int coluna) {
 
 		int linhaVazia = -1;
@@ -86,20 +87,32 @@ public class JogoDosOito extends JFrame implements KeyListener {
 
 		if (colunaVazia == coluna) {
 			if (linha - 1 == linhaVazia) {
-				movimentarPeca(linha, coluna, linhaVazia, colunaVazia);
+				tabuleiro.setValue(linhaVazia, colunaVazia, tabuleiro.getValue(linha, coluna));
+				tabuleiro.setValue(linha, coluna, 0);
+				atualizarTabuleiro();
+
 			} else if (linha + 1 == linhaVazia) {
-				movimentarPeca(linha, coluna, linhaVazia, colunaVazia);
+				tabuleiro.setValue(linhaVazia, colunaVazia, tabuleiro.getValue(linha, coluna));
+				tabuleiro.setValue(linha, coluna, 0);
+				atualizarTabuleiro();
+
 			}
 		} else if (linhaVazia == linha) {
 			if (coluna - 1 == colunaVazia) {
-				movimentarPeca(linha, coluna, linhaVazia, colunaVazia);
+				tabuleiro.setValue(linhaVazia, colunaVazia, tabuleiro.getValue(linha, coluna));
+				tabuleiro.setValue(linha, coluna, 0);
+				atualizarTabuleiro();
+
 			} else if (coluna + 1 == colunaVazia) {
-				movimentarPeca(linha, coluna, linhaVazia, colunaVazia);
+				tabuleiro.setValue(linhaVazia, colunaVazia, tabuleiro.getValue(linha, coluna));
+				tabuleiro.setValue(linha, coluna, 0);
+				atualizarTabuleiro();
+
 			}
 		}
 
 	}
-	public boolean jogoConcluido() {
+	public boolean verificaJogo() {
 		int count = 1;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -112,18 +125,15 @@ public class JogoDosOito extends JFrame implements KeyListener {
 		return true;
 	}
 
-	private void movimentarPeca(int linha, int coluna, int linhaVazia, int colunaVazia) {
-		tabuleiro.setValue(linhaVazia, colunaVazia, tabuleiro.getValue(linha, coluna));
-		tabuleiro.setValue(linha, coluna, 0);
-		atualizarTabuleiro();
 
-		if (jogoConcluido()) {
+
+	private void atualizarTabuleiro() {
+
+		if (verificaJogo()) {
 			JOptionPane.showMessageDialog(this, "Parabéns, você venceu!");
 			reiniciarJogo();
 		}
-	}
 
-	private void atualizarTabuleiro() {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				JButton botao = botoes[i][j];
