@@ -1,16 +1,22 @@
 package chat.gpt;
 
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
+
+import org.example.classes.Peca;
+import org.example.classes.Tabuleiro;
 
 public class JogoDosOito extends JFrame implements KeyListener {
 
@@ -56,7 +62,7 @@ public class JogoDosOito extends JFrame implements KeyListener {
 		add(new JLabel(""));
 		add(botaoReiniciar);
 		add(new JLabel(""));
-		
+
 		addKeyListener(this);
 		setFocusable(true);
 		atualizarTabuleiro();
