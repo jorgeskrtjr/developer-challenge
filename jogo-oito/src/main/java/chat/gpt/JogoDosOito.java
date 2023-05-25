@@ -20,17 +20,30 @@ public class JogoDosOito extends JFrame implements KeyListener {
 	private List<Peca> listaPecas;
 
 	public JogoDosOito() {
-		super("Jogo dos Oito");
+
+		this.listaPecas = new ArrayList<Peca>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(300, 300);
 		setLayout(new GridLayout(4, 3));
 
+		int count = 0;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				JButton botao = new JButton();
 				botao.setFont(new Font("Arial", Font.BOLD, 36));
 				botoes[i][j] = botao;
 				add(botao);
+				if (count < 8) {
+					count++;
+					listaPecas.add(new Peca(tabuleiro.getValue(i, j), i, j));
+				}
+				botoes[i][j].addActionListener((ActionEvent e) -> {
+					listaPecas.forEach(peca -> {
+						if (e.getActionCommand().equals(String.valueOf(peca.getnumero()))){
+							movimentarPeca(peca.getLinha(), peca.getColuna());
+						}
+					});
+				});
 			}
 		}
 
@@ -43,7 +56,7 @@ public class JogoDosOito extends JFrame implements KeyListener {
 		add(new JLabel(""));
 		add(botaoReiniciar);
 		add(new JLabel(""));
-
+		
 		addKeyListener(this);
 		setFocusable(true);
 		atualizarTabuleiro();
