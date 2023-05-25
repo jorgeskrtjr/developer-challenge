@@ -1,4 +1,4 @@
-package org.example.classes;
+package chat.gpt.classes;
 
 public class Peca {
     private int linha;

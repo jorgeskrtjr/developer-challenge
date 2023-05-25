@@ -1,4 +1,5 @@
-package org.example.classes;
+package chat.gpt.classes;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
