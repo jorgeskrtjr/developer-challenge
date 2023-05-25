@@ -14,9 +14,10 @@ import javax.swing.JOptionPane;
 
 public class JogoDosOito extends JFrame implements KeyListener {
 
-	private int[][] tabuleiro = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } };
-	private JButton[][] botoes = new JButton[3][3];
 	private JButton botaoReiniciar;
+	private Tabuleiro tabuleiro = new Tabuleiro();
+	private JButton[][] botoes = new JButton[3][3];
+	private List<Peca> listaPecas;
 
 	public JogoDosOito() {
 		super("Jogo dos Oito");
