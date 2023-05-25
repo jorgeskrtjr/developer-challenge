@@ -69,65 +69,41 @@ public class JogoDosOito extends JFrame implements KeyListener {
 		setVisible(true);
 	}
 
-	public void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		switch (keyCode) {
-		case KeyEvent.VK_UP:
-			mover(1, 0);
-			break;
-		case KeyEvent.VK_DOWN:
-			mover(-1, 0);
-			break;
-		case KeyEvent.VK_LEFT:
-			mover(0, 1);
-			break;
-		case KeyEvent.VK_RIGHT:
-			mover(0, -1);
-			break;
-		}
-	}
+	private void movimentarPeca(int linha, int coluna) {
 
-	public void keyTyped(KeyEvent e) {
-	}
-
-	public void keyReleased(KeyEvent e) {
-	}
-
-	private void mover(int linha, int coluna) {
 		int linhaVazia = -1;
 		int colunaVazia = -1;
+
+
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				if (tabuleiro[i][j] == 0) {
+				if (tabuleiro.getValue(i, j) == 0) {
 					linhaVazia = i;
 					colunaVazia = j;
 				}
 			}
 		}
-		int novaLinha = linhaVazia + linha;
-		int novaColuna = colunaVazia + coluna;
-		if (novaLinha < 0 || novaLinha > 2 || novaColuna < 0 || novaColuna > 2) {
-			// movimento inválido
-			return;
-		}
-		tabuleiro[linhaVazia][colunaVazia] = tabuleiro[novaLinha][novaColuna];
-		tabuleiro[novaLinha][novaColuna] = 0;
-		atualizarTabuleiro();
-		if (jogoConcluido()) {
-			JOptionPane.showMessageDialog(this, "Parabéns, você venceu!");
-			reiniciarJogo();
-		}
-	}
 
-	public static void main(String[] args) {
-		new JogoDosOito();
-	}
+		if (colunaVazia == coluna) {
+			if (linha - 1 == linhaVazia) {
+				movimentarPeca(linha, coluna, linhaVazia, colunaVazia);
+			} else if (linha + 1 == linhaVazia) {
+				movimentarPeca(linha, coluna, linhaVazia, colunaVazia);
+			}
+		} else if (linhaVazia == linha) {
+			if (coluna - 1 == colunaVazia) {
+				movimentarPeca(linha, coluna, linhaVazia, colunaVazia);
+			} else if (coluna + 1 == colunaVazia) {
+				movimentarPeca(linha, coluna, linhaVazia, colunaVazia);
+			}
+		}
 
-	private boolean jogoConcluido() {
+	}
+	public boolean jogoConcluido() {
 		int count = 1;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				if (tabuleiro[i][j] != count % 9) {
+				if (tabuleiro.getValue(i, j) != count % 9) {
 					return false;
 				}
 				count++;
@@ -136,43 +112,57 @@ public class JogoDosOito extends JFrame implements KeyListener {
 		return true;
 	}
 
-	private boolean movimentarPeca(int linha, int coluna) {
-		if (linha > 0 && tabuleiro[linha - 1][coluna] == 0) {
-			tabuleiro[linha - 1][coluna] = tabuleiro[linha][coluna];
-			tabuleiro[linha][coluna] = 0;
-			return true;
-		} else if (linha < 2 && tabuleiro[linha + 1][coluna] == 0) {
-			tabuleiro[linha + 1][coluna] = tabuleiro[linha][coluna];
-			tabuleiro[linha][coluna] = 0;
-			return true;
-		} else if (coluna > 0 && tabuleiro[linha][coluna - 1] == 0) {
-			tabuleiro[linha][coluna - 1] = tabuleiro[linha][coluna];
-			tabuleiro[linha][coluna] = 0;
-			return true;
-		} else if (coluna < 2 && tabuleiro[linha][coluna + 1] == 0) {
-			tabuleiro[linha][coluna + 1] = tabuleiro[linha][coluna];
-			tabuleiro[linha][coluna] = 0;
-			return true;
+	private void movimentarPeca(int linha, int coluna, int linhaVazia, int colunaVazia) {
+		tabuleiro.setValue(linhaVazia, colunaVazia, tabuleiro.getValue(linha, coluna));
+		tabuleiro.setValue(linha, coluna, 0);
+		atualizarTabuleiro();
+
+		if (jogoConcluido()) {
+			JOptionPane.showMessageDialog(this, "Parabéns, você venceu!");
+			reiniciarJogo();
 		}
-		return false;
 	}
 
 	private void atualizarTabuleiro() {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				JButton botao = botoes[i][j];
-				int valor = tabuleiro[i][j];
+				int valor = tabuleiro.getValue(i, j);
 				if (valor == 0) {
 					botao.setText("");
 				} else {
 					botao.setText(String.valueOf(valor));
+				}
+				botoes[i][j] = botao;
+				for (int p = 0; p < 8; p++) {
+					if (listaPecas.get(p).getnumero() == valor){ listaPecas.get(p).setLinha(i); listaPecas.get(p).setColuna(j); listaPecas.get(p).setNumero(valor);
+					}
 				}
 			}
 		}
 	}
 
 	private void reiniciarJogo() {
-		tabuleiro = new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } };
+		tabuleiro = new Tabuleiro();
 		atualizarTabuleiro();
+	}
+
+	public void ordenar() {
+		this.tabuleiro.ordenar();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 }
